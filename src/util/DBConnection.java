@@ -8,7 +8,7 @@ import com.mysql.jdbc.Connection;
 public class DBConnection {
 
 	private  Connection  cnx;
-	String url = "jdbc:mysql://localhost:3306/speedysolution";
+	String url = "jdbc:mysql://localhost:3306/speedysolutions";
 	String user = "root";
 	String pwd = "";
 	private static DBConnection instance;
