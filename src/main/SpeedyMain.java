@@ -1,10 +1,18 @@
 package main;
 
+import javax.swing.SwingUtilities;
+
+import view.LoginPage;
+
 public class SpeedyMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new LoginPage();
+            }
+        });
+    }
 
 }
