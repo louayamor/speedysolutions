@@ -33,7 +33,7 @@ public class UserController implements UserDAO{
 		boolean connectedUser = false;
         System.out.print("Creating User ********************************");
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        String req = "insert into user (username,email,password,role,createdAt,isVerified,isBanned,isConnected) values (?,?,?,?,?,?,?,?)";
+        String req = "insert into user (username,email,password,role,createdAt,isVerified,isBanned) values (?,?,?,?,?,?,?)";
 
         try {
             pst = conn.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
@@ -44,7 +44,6 @@ public class UserController implements UserDAO{
             pst.setTimestamp(5, u.getCreatedAt());
             pst.setInt(6, 0);
             pst.setInt(7, 0);
-            pst.setInt(8, 1);
             
             System.out.print(pst);
             

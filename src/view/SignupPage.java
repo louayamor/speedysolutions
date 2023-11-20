@@ -8,10 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,49 +31,9 @@ public class SignupPage{
         tfUsername = new JTextField();
         tfEmail = new JTextField();
         tfPass = new JPasswordField();
-
-        // Add other components as needed
-        JButton btnSignup = new JButton("Signup");
-        JButton btnCancel = new JButton("Cancel");
-
-        // Set up event listeners if needed
-        btnSignup.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	signupAction();
-            }
-
-			private void signupAction() {
-				// TODO Auto-generated method stub
-				
-				String username = tfUsername.getText();
-		        String email = tfEmail.getText();
-		        String password = tfPass.getText();
-		       
-		        String role = "Freelancer";
-		    
-		        User u = new User(username, email, password, role);
-		        try {
-		            if (uc.insertUser(u)) {
-		            	JOptionPane.showMessageDialog(null, "Welcome" + username, "Success", JOptionPane.INFORMATION_MESSAGE);
-		            } else {
-		            	JOptionPane.showMessageDialog(null, "Try again", "Instalance", JOptionPane.ERROR_MESSAGE);
-		            }
-		        } catch (SQLException ex) {
-		            Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
-		        }
-		        frame.dispose();
-		    	
-			}
-        });
-
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Handle Cancel button action
-            }
-        });
     }
+
+        
 
     private void setupLayout() {
     	JPanel panel = new JPanel(null); 
@@ -102,14 +59,52 @@ public class SignupPage{
         btnCancel.setBounds(180, 240, 100, 30);
 
         panel.add(btnSignup);
-        panel.add(btnCancel);
+        
+        btnSignup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                signupAction();
+            }
+        });
+
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
 
         frame.getContentPane().add(panel);
-        frame.pack(); // Adjust the size of the JFrame to fit its contents
+        frame.pack(); 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        
+        
     }
+    
+    private void signupAction() {
+		// TODO Auto-generated method stub
+		
+		String username = tfUsername.getText();
+        String email = tfEmail.getText();
+        String password = tfPass.getText();
+       
+        String role = "Freelancer";
+    
+        User u = new User(username, email, password, role);
+        try {
+            if (uc.insertUser(u)) {
+            	JOptionPane.showMessageDialog(null, "Welcome" + username, "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+            	JOptionPane.showMessageDialog(null, "Try again", "Instalance", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SignupPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        frame.dispose();
+    	
+	}
 
     private void addLabelAndTextField(JPanel panel, String labelText, JTextField textField, int yPosition) {
         JLabel label = new JLabel(labelText);
