@@ -39,7 +39,7 @@ public class UserController implements UserDAO{
             pst = conn.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, u.getUsername());           
             pst.setString(2, u.getEmail());
-            pst.setString(3, PasswordEncryption.cryptage(u.getPassword()));
+            pst.setString(3, PasswordEncryption.cryptage(u.getPassword().toString()));
             pst.setString(4, u.getRole());
             pst.setTimestamp(5, u.getCreatedAt());
             pst.setInt(6, 0);
@@ -63,7 +63,6 @@ public class UserController implements UserDAO{
                     .getName()).log(Level.SEVERE, null, ex);
     }       
         return connectedUser;
-		
 	}
 
 	@Override

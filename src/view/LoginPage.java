@@ -4,8 +4,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginPage {
+public class LoginPage extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField tfEmail;
     private JPasswordField tfPass;
     private JCheckBox chSeePass;

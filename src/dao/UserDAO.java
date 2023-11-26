@@ -12,6 +12,5 @@ public interface UserDAO {
     public JList<User> showAllUsers() throws SQLException;
     public User selectOneUserByID(int idUser) throws SQLException;
     public JList<User> sortUsers(String value);
-    public JList<User> filterRole(String value);
-    
+    public JList<User> filterRole(String value);    
 }

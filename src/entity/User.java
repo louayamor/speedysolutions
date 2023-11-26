@@ -4,8 +4,9 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 public class User {
-	private int id;
-    private String username, password, email,role;
+	private int idUser;
+    private String username, email,role;
+    private char [] password;
     private int isVerified =0;
     private int isBanned =0;
     private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
@@ -14,13 +15,13 @@ public class User {
     
     
     public User(int id) {
-        this.id = id;
+        this.idUser = id;
     }
 	
-	public User(int id, String username, String password, String email, String role, int isVerified, int isBanned,
+	public User(int id, String username, char[] password, String email, String role, int isVerified, int isBanned,
 			Timestamp createdAt, Timestamp updatedAt) {
 		super();
-		this.id = id;
+		this.idUser = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -34,7 +35,7 @@ public class User {
 
 	
 
-	public User(String username, String password, String email, String role) {
+	public User(String username, char[] password, String email, String role) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -45,10 +46,10 @@ public class User {
 
 
 	public int getId() {
-		return id;
+		return idUser;
 	}
 	public void setId(int id) {
-		this.id = id;
+		this.idUser = id;
 	}
 	public String getUsername() {
 		return username;
@@ -56,10 +57,10 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getPassword() {
+	public char[] getPassword() {
 		return password;
 	}
-	public void setPassword(String password) {
+	public void setPassword(char[] password) {
 		this.password = password;
 	}
 	public String getEmail() {
@@ -120,7 +121,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + '}';
+        return "User{" + "id=" + idUser + ", username=" + username + ", password=" + password.toString() + ", email=" + email + ", role=" + role + '}';
     }
 
 }
