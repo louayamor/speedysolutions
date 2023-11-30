@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.sql.SQLException;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import controller.UserController;
@@ -43,22 +44,21 @@ public class AdminDashboard extends JFrame {
 
     public AdminDashboard() throws SQLException {
         initComponents();
+        
         setupLayout();
     }
 
-    private void initComponents() throws SQLException {
-
-        uc = new UserController();
+    private void initComponents() throws SQLException{
+    	uc = new UserController();
+    	       
         tfSearch = new JTextField();
         cbSort = new JComboBox<>();
         tfUsername = new JTextField();
         tfEmail = new JTextField();
         tfPassword = new JPasswordField();
         cbRole = new JComboBox<>();
-        btnCreate = new JButton("Add");
-        String[] columns = {"User ID", "Username", "Email", "Password", "Role", "Authorized", "Ban", "Creation Date", "Updated Date"};
-        Object[][] userData = uc.showAllUsers();
-        tableUser = new JTable(userData, columns);
+        btnCreate = new JButton("Add");       
+        tableUser = new JTable();
         btnUpdate = new JButton("Update");
         btnDelete = new JButton("Delete");
         btnSort = new JButton("Sort");
@@ -71,7 +71,22 @@ public class AdminDashboard extends JFrame {
         btnPdf = new JButton("Pdf");
         btnPrint = new JButton("Print");
         btnStat = new JButton("Statistics");
-        
+        init();
+    }
+    
+    public void init() throws SQLException {
+        updateTable();
+        tfUsername.setText("");
+        tfEmail.setText("");
+        tfPassword.setText("");
+        cbRole.removeAllItems();
+    }
+    
+    private void updateTable() throws SQLException {
+    	String[] columns = {"User ID", "Username", "Email", "Password", "Role", "Authorized", "Ban", "Creation Date", "Updated Date"};
+        Object[][] userData = uc.showAllUsers();   	
+        System.out.println("Updating table ************************");
+        tableUser = new JTable(userData, columns);
     }
 
     private void setupLayout() {
@@ -79,11 +94,36 @@ public class AdminDashboard extends JFrame {
         panel.setPreferredSize(new Dimension(1000, 700));
         panel.setBackground(new Color(44, 47, 72));
 
-        // Create a JPanel for the buttons and add it to the south
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(btnCreate);
         buttonPanel.add(btnUpdate);
+        
         buttonPanel.add(btnDelete);
+        btnDelete.addActionListener(e -> {
+        	try {
+                int selectedRow = tableUser.getSelectedRow();
+                if (selectedRow != -1) {
+                    int userId = (int) tableUser.getValueAt(selectedRow, 0);
+                    User selectedUser = uc.selectOneUserByID(userId);
+                    int confirmation = JOptionPane.showConfirmDialog(
+                            this,
+                            "Are you sure you want to delete the user: " + selectedUser.getUsername() + "?",
+                            "Confirm Deletion",
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    
+                    if (confirmation == JOptionPane.YES_OPTION) {
+                        uc.deleteUser(selectedUser);
+                        updateTable();
+                        
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "Please select a user to delete.", "No User Selected", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }});
+        	     
         buttonPanel.add(btnSort);
         buttonPanel.add(rbAdmin);
         buttonPanel.add(rbClient);
@@ -95,11 +135,8 @@ public class AdminDashboard extends JFrame {
         buttonPanel.add(btnPrint);
         buttonPanel.add(btnStat);
         panel.add(buttonPanel, BorderLayout.SOUTH);
-
-        // Add the table to the center
         panel.add(new JScrollPane(tableUser), BorderLayout.CENTER);
 
-        // Add labels and text fields to the west
         JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         addLabelAndTextField(formPanel, "Search", tfSearch, 10);
         addLabelAndComboBox(formPanel, "Sort", cbSort,20 );
@@ -115,42 +152,34 @@ public class AdminDashboard extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-    
+    }   
 
     private void addLabelAndTextField(JPanel panel, String labelText, JTextField textField, int yPosition) {
         JLabel label = new JLabel(labelText);
         styleLabel(label);
-        label.setBounds(50, yPosition, 100, 20);
         panel.add(label);
 
-        textField.setBounds(150, yPosition, 200, 25);
         panel.add(textField);
     }
 
     private void addLabelAndPasswordField(JPanel panel, String labelText, JPasswordField passwordField, int yPosition) {
         JLabel label = new JLabel(labelText);
         styleLabel(label);
-        label.setBounds(50, yPosition, 100, 20);
         panel.add(label);
 
-        passwordField.setBounds(150, yPosition, 200, 25);
         panel.add(passwordField);
     }
 
     private void addLabelAndComboBox(JPanel panel, String labelText, JComboBox<String> comboBox, int yPosition) {
         JLabel label = new JLabel(labelText);
         styleLabel(label);
-        label.setBounds(50, yPosition, 100, 20);
         panel.add(label);
 
-        comboBox.setBounds(150, yPosition, 200, 25);
         panel.add(comboBox);
     }
 
     private void styleLabel(JLabel label) {
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Arial", Font.PLAIN, 14));
-    }
-
+    }  
 }

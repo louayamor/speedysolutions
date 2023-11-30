@@ -71,21 +71,50 @@ public class UserController implements UserDAO{
 
 	@Override
 	public boolean updateUser(User u) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String query = "UPDATE `user` SET `username`=?,`email`=?,`password`=?,`role`=? WHERE idUser = ?";
+        
+        try {
+            pst = conn.prepareStatement(query);
+            pst.setString(1, u.getUsername());
+            pst.setString(2, u.getEmail());
+            pst.setString(3, u.getPassword().toString());
+            pst.setString(4, u.getRole());
+            pst.setInt(5, u.getId());
+            //System.out.println(pst.);
+            pst.executeUpdate();
+
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return false; 
+        
 	}
 
 	@Override
 	public boolean deleteUser(User u) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        String query = "delete from user where id = ?";
+
+        try {
+            pst = conn.prepareStatement(query);
+            pst.setInt(1, u.getId());
+            pst.executeUpdate();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
 	}
 
 	@Override
     public Object[][] showAllUsers() throws SQLException {
         String query = "Select * from `user`";
-
-        DefaultListModel<User> usersListModel = new DefaultListModel<>();
 
         try {
             ste = conn.createStatement();
@@ -110,9 +139,6 @@ public class UserController implements UserDAO{
             	data[i][8] = rs.getTimestamp("updatedAt");
             	i++;
             }            
-            rs.close();
-            ste.close();
-            conn.close();
 
             return data;
         } catch (SQLException ex) {
@@ -122,9 +148,23 @@ public class UserController implements UserDAO{
         
 	}
 	@Override
-	public User selectOneUserByID(int idUser) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public User selectOneUserByID(int id) throws SQLException {
+	    User user = null;
+
+	    String query = "SELECT * FROM `user` WHERE `id` = ?";
+
+	    try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+	        preparedStatement.setInt(1, id);
+
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            if (resultSet.next()) {
+	                int userId = resultSet.getInt("id");
+	                user = new User(userId);
+	            }
+	        }
+	    }
+
+	    return user;
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class DBConnection {
 	String user = "root";
 	String pwd = "";
 	private static DBConnection instance;
-	private DBConnection() {
+	public DBConnection() {
 	        
 	      try {
 	          cnx = (Connection) DriverManager.getConnection(url, user, pwd);
