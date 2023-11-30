@@ -1,8 +1,9 @@
-package view;
+package view.common;
 
 import javax.swing.*;
 import entity.User;
 import service.FormValidation;
+import view.admin.AdminDashboard;
 import controller.UserController;
 
 import java.awt.*;
@@ -76,7 +77,7 @@ public class SignupPage extends JFrame{
         panel.add(haveAccountLabel);  */
 
         JButton btnSignup = new JButton("Signup");
-        JButton btnCancel = new JButton("Cancel");
+        JButton btnCancel = new JButton("Back to login");
         btnSignup.setBackground(new Color(70, 130, 180)); 
         btnCancel.setBackground(new Color(128, 128, 128)); 
 
@@ -84,10 +85,30 @@ public class SignupPage extends JFrame{
         btnCancel.setForeground(Color.WHITE);
 
         btnSignup.setBounds(50, 280, 100, 30);
-        btnCancel.setBounds(180, 280, 100, 30);
+        btnCancel.setBounds(180, 280, 150, 30);
 
 
         panel.add(btnSignup);
+        
+        JLabel haveAccountLabel = new JLabel("Already have an account? Click here to login.");
+        haveAccountLabel.setForeground(Color.white);
+        haveAccountLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        haveAccountLabel.setBounds(50, 240, 300, 20);
+        haveAccountLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                    	JFrame loginFrame = new LoginPage();
+                        loginFrame.setVisible(true);
+                        frame.dispose();
+                    }
+                });
+            }
+        });
+        panel.add(haveAccountLabel);  
+        
         panel.add(btnCancel);
         
         btnSignup.addActionListener(new ActionListener() {
@@ -106,11 +127,8 @@ public class SignupPage extends JFrame{
                     @Override
                     public void run() {
                     	JFrame loginFrame = new LoginPage();
-                        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                        loginFrame.pack();
-                        loginFrame.setLocationRelativeTo(null);
                         loginFrame.setVisible(true);
-                        frame.dispose();
+                        
                     }
                 });
                 frame.dispose();
@@ -150,7 +168,12 @@ public class SignupPage extends JFrame{
             	SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        new AdminDashboard().setVisible(true);
+                        try {
+							new AdminDashboard().setVisible(true);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
                     }});
             } else {
             	JOptionPane.showMessageDialog(null, "Try again", "Login Failed", JOptionPane.ERROR_MESSAGE);

@@ -5,9 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
 import dao.UserDAO;
@@ -78,11 +82,45 @@ public class UserController implements UserDAO{
 	}
 
 	@Override
-	public JList<User> showAllUsers() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Object[][] showAllUsers() throws SQLException {
+        String query = "Select * from `user`";
 
+        DefaultListModel<User> usersListModel = new DefaultListModel<>();
+
+        try {
+            ste = conn.createStatement();
+            rs = ste.executeQuery(query);
+            
+            rs.last();
+            int rowCount = rs.getRow();
+            rs.beforeFirst();
+            
+            Object[][] data = new Object[rowCount][9];
+            
+            int i = 0;
+            while (rs.next()) {
+            	data[i][0] = rs.getInt("id");
+            	data[i][1] = rs.getString("username");
+            	data[i][2] = rs.getString("email");
+            	data[i][3] = rs.getString("password").toCharArray();
+            	data[i][4] = rs.getString("role");
+            	data[i][5] = rs.getInt("isVerified");
+            	data[i][6] = rs.getInt("isBanned");
+            	data[i][7] = rs.getTimestamp("createdAt");
+            	data[i][8] = rs.getTimestamp("updatedAt");
+            	i++;
+            }            
+            rs.close();
+            ste.close();
+            conn.close();
+
+            return data;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            return new Object[0][0];
+        }
+        
+	}
 	@Override
 	public User selectOneUserByID(int idUser) throws SQLException {
 		// TODO Auto-generated method stub
