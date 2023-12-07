@@ -1,8 +1,6 @@
 package dao;
 
 import java.sql.SQLException;
-
-import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import entity.User;
 

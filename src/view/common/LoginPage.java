@@ -10,8 +10,7 @@ public class LoginPage extends JFrame {
     private static final long serialVersionUID = 1L;
     private JTextField tfEmail;
     private JPasswordField tfPass;
-    private JCheckBox chSeePass;
-    private JButton btnContinue;
+    private JButton btnLogin;
     private JButton btnClose;
 
     public LoginPage() {
@@ -22,11 +21,10 @@ public class LoginPage extends JFrame {
     private void initComponents() {
         tfEmail = new JTextField();
         tfPass = new JPasswordField();
-        chSeePass = new JCheckBox("Show password");
-        btnContinue = new JButton("Continue");
+        btnLogin = new JButton("Login");
         btnClose = new JButton("Close");
 
-        btnContinue.addActionListener(new ActionListener() {
+        btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             }
@@ -52,24 +50,25 @@ public class LoginPage extends JFrame {
         titleLabel.setForeground(Color.WHITE);
         panel.add(titleLabel);
 
-        addLabelAndTextField(panel, "Email:", tfEmail, labelFont, labelColor);
-        addLabelAndTextField(panel, "Password:", tfPass, labelFont, labelColor);
+        addLabelAndTextField(panel, "Email		", tfEmail, labelFont, labelColor);
+        addLabelAndTextField(panel, "Password", tfPass, labelFont, labelColor);
 
-        chSeePass.setForeground(Color.WHITE);
-        panel.add(chSeePass);
+        
 
         JLabel forgotPassLabel = new JLabel("Forgot password?");
         forgotPassLabel.setForeground(Color.WHITE);
+        panel.add(forgotPassLabel);
         JLabel haveAccountLabel = new JLabel("Don't have an account?");
         haveAccountLabel.setForeground(Color.WHITE);
-
-        panel.add(forgotPassLabel);
+        panel.add(haveAccountLabel);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
-        btnContinue.setBackground(new Color(70, 130, 180));
-        btnContinue.setForeground(Color.WHITE);
+        buttonPanel.setBackground(new Color(44, 47, 72));
+        
+        btnLogin.setBackground(new Color(70, 130, 180));
+        btnLogin.setForeground(Color.WHITE);
 
-        buttonPanel.add(btnContinue);
+        buttonPanel.add(btnLogin);
 
         panel.add(buttonPanel);
 
@@ -89,6 +88,15 @@ public class LoginPage extends JFrame {
         JLabel label = new JLabel(labelText);
         label.setFont(labelFont);
         label.setForeground(labelColor);
+        
+        GridBagConstraints gbcPasswordField = new GridBagConstraints();
+        gbcPasswordField.gridx = 1;
+        gbcPasswordField.anchor = GridBagConstraints.WEST;
+        gbcPasswordField.fill = GridBagConstraints.HORIZONTAL;
+        gbcPasswordField.insets = new Insets(5, 5, 5, 5);
+        gbcPasswordField.gridwidth = 2;
+        
+        textField.setPreferredSize(new Dimension(200, 25));
 
         inputPanel.add(label);
         inputPanel.add(textField);
