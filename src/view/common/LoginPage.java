@@ -1,17 +1,34 @@
 package view.common;
 
 import javax.swing.*;
+
+import service.PasswordEncryption;
+import service.Wrapper;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import static service.session.UserSession.CURRENT_USER;
+import service.AuthService;
+import service.session.UserSession;
+import view.admin.AdminDashboard;
 
 public class LoginPage extends JFrame {
 
-    private static final long serialVersionUID = 1L;
-    private JTextField tfEmail;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField tfUsername;
     private JPasswordField tfPass;
     private JButton btnLogin;
     private JButton btnClose;
+    private JLabel labelError;
+    
+    private AuthService authService;
+    private Wrapper wrapper;
 
     public LoginPage() {
         initComponents();
@@ -19,20 +36,25 @@ public class LoginPage extends JFrame {
     }
 
     private void initComponents() {
-        tfEmail = new JTextField();
+    	authService = new AuthService();
+    	wrapper = new Wrapper();
+        tfUsername = new JTextField();
         tfPass = new JPasswordField();
         btnLogin = new JButton("Login");
         btnClose = new JButton("Close");
+        labelError = new JLabel();
 
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                loginUser();
             }
         });
 
         btnClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.exit(0);
             }
         });
     }
@@ -50,10 +72,8 @@ public class LoginPage extends JFrame {
         titleLabel.setForeground(Color.WHITE);
         panel.add(titleLabel);
 
-        addLabelAndTextField(panel, "Email		", tfEmail, labelFont, labelColor);
+        addLabelAndTextField(panel, "Email		", tfUsername, labelFont, labelColor);
         addLabelAndTextField(panel, "Password", tfPass, labelFont, labelColor);
-
-        
 
         JLabel forgotPassLabel = new JLabel("Forgot password?");
         forgotPassLabel.setForeground(Color.WHITE);
@@ -64,13 +84,25 @@ public class LoginPage extends JFrame {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
         buttonPanel.setBackground(new Color(44, 47, 72));
-        
+
         btnLogin.setBackground(new Color(70, 130, 180));
         btnLogin.setForeground(Color.WHITE);
 
+        btnClose.setBackground(new Color(70, 130, 180));
+        btnClose.setForeground(Color.WHITE);
+
         buttonPanel.add(btnLogin);
+        buttonPanel.add(btnClose);
 
         panel.add(buttonPanel);
+        
+        JPanel errorPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        errorPanel.setBackground(new Color(44, 47, 72));
+
+        labelError.setForeground(Color.RED);
+        errorPanel.add(labelError);
+
+        panel.add(errorPanel);
 
         frame.setLayout(new BorderLayout());
         frame.add(panel, BorderLayout.CENTER);
@@ -88,20 +120,48 @@ public class LoginPage extends JFrame {
         JLabel label = new JLabel(labelText);
         label.setFont(labelFont);
         label.setForeground(labelColor);
-        
-        GridBagConstraints gbcPasswordField = new GridBagConstraints();
-        gbcPasswordField.gridx = 1;
-        gbcPasswordField.anchor = GridBagConstraints.WEST;
-        gbcPasswordField.fill = GridBagConstraints.HORIZONTAL;
-        gbcPasswordField.insets = new Insets(5, 5, 5, 5);
-        gbcPasswordField.gridwidth = 2;
-        
+
         textField.setPreferredSize(new Dimension(200, 25));
 
         inputPanel.add(label);
         inputPanel.add(textField);
 
         panel.add(inputPanel);
+    }
+
+    private void loginUser() {
+        String username = tfUsername.getText().trim();
+        String password = PasswordEncryption.cryptage(tfPass.getText().trim());
+        
+        authService.Authenticate(username, password);
+
+        if (CURRENT_USER.getUser_LoggedIn().getIsBanned()) {
+            JOptionPane.showMessageDialog(this, "You are banned", "Ban", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if(CURRENT_USER  == null){
+            labelError.setText("User Not Found!");
+        }
+        
+        if (CURRENT_USER != null) {
+            if (wrapper.isFreelancer(CURRENT_USER.getUser_LoggedIn().getId())) {
+            	HomePage homePage = new HomePage();
+                homePage.setVisible(true);
+            } else if (wrapper.isAdmin(CURRENT_USER.getUser_LoggedIn().getId())) {
+                AdminDashboard ad;
+				try {
+					ad = new AdminDashboard();
+					ad.setVisible(true);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                
+            } else if (wrapper.isBusinessOwner(CURRENT_USER.getUser_LoggedIn().getId())) {
+            	HomePage homePage = new HomePage();
+                homePage.setVisible(true);
+            }
+        }
     }
 
     public static void main(String[] args) {

@@ -1,11 +1,13 @@
-package service.session;
+package service;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import service.Wrapper;
+import service.session.AuthResponseDTO;
+import service.session.UserSession;
 import util.DBConnection;
 
 public class AuthService extends Wrapper{
@@ -20,9 +22,7 @@ public class AuthService extends Wrapper{
     
 
     public boolean Authenticate(String username, String password) {
-            
-    
-
+     
         try {
             ps = conn.prepareStatement
                     ("select * from user where username= '" + username + "' ");
@@ -46,6 +46,7 @@ public class AuthService extends Wrapper{
                             _this.setIsBanned(resultSetFinalCheck.getBoolean("isBanned"));
                            
                             UserSession.getSameInstance(_this);
+                            
                             if (resultSet != null && resultSetFinalCheck != null) {
                                 System.out.println(_this);
                             }

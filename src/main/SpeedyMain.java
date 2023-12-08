@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.swing.SwingUtilities;
 
 import view.admin.AdminDashboard;
+import view.common.HomePage;
 import view.common.LoginPage;
 import view.common.SignupPage;
 
@@ -14,12 +15,7 @@ public class SpeedyMain {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                try {
-					new AdminDashboard();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            	new SignupPage();
             }
         });
     }
