@@ -94,10 +94,11 @@ public class AdminDashboard extends JFrame {
 
     private void setupLayout() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setPreferredSize(new Dimension(1000, 700));
+        panel.setPreferredSize(new Dimension(800, 500));
         panel.setBackground(new Color(44, 47, 72));
 
         tableUser.setBackground(new Color(240, 240, 240));
+        tableUser.setRowHeight(25);
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(btnCreate);
         buttonPanel.add(btnUpdate);
@@ -138,7 +139,7 @@ public class AdminDashboard extends JFrame {
 
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(new Color(44, 47, 72));
-        formPanel.setPreferredSize(new Dimension(300, 300));
+        formPanel.setPreferredSize(new Dimension(200, 300));
 
         addLabelAndComponent(formPanel, "Search", tfSearch, 0);
         addLabelAndComponent(formPanel, "Sort", cbSort, 20);

@@ -185,7 +185,7 @@ public class SignupPage extends JFrame {
         try {
             // Modify the parameters according to your needs
             String subject = "Signup Confirmation";
-            String body = "Dear " +username +  "\n\nThank you for signing up!";
+            String body = "Dear user,\n\nThank you for signing up!";
 
             Mailing.sendEmail(userEmail, subject, body);
 

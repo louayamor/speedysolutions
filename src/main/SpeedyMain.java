@@ -8,6 +8,7 @@ import view.admin.AdminDashboard;
 import view.common.HomePage;
 import view.common.LoginPage;
 import view.common.SignupPage;
+import view.freelancer.ServicePage;
 
 public class SpeedyMain {
 
@@ -15,7 +16,7 @@ public class SpeedyMain {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-            	new SignupPage();
+            	new ServicePage();
             }
         });
     }
