@@ -18,9 +18,9 @@ public class User {
         this.idUser = id;
     }
 	
-	public User(int id, String username, char[] password, String email, String role, int isVerified, int isBanned,
+	public User(int id, String username, String email, String role, char[] password,int isVerified, int isBanned,
 			Timestamp createdAt, Timestamp updatedAt) {
-		super();
+		
 		this.idUser = id;
 		this.username = username;
 		this.password = password;
@@ -42,9 +42,22 @@ public class User {
 		this.email = email;
 		this.role = role;
 	}
+	
+	public User(int id,String username, String email, String role) {
+		super();
+		this.idUser = id;
+		this.username = username;
+		this.email = email;
+		this.role = role;
+	}
 
-
-
+	public User(String username, String email, String role) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.role = role;
+	}
+	
 	public int getId() {
 		return idUser;
 	}
@@ -123,5 +136,7 @@ public class User {
     public String toString() {
         return "User{" + "id=" + idUser + ", username=" + username + ", password=" + password.toString() + ", email=" + email + ", role=" + role + '}';
     }
+    
+    
 
 }

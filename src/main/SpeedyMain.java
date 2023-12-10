@@ -16,7 +16,7 @@ public class SpeedyMain {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-            	new ServicePage();
+            	new SignupPage();
             }
         });
     }

@@ -159,7 +159,7 @@ public class SignupPage extends JFrame {
         User u = new User(username, password.toCharArray(), email, role);
         try {
             if (uc.insertUser(u)) {
-            	sendConfirmationEmail(username,email);
+            	//sendConfirmationEmail(username,email);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {

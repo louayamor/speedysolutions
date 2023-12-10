@@ -39,8 +39,9 @@ public class AuthService extends Wrapper{
                         if (resultSetFinalCheck != null) {
 
                             AuthResponseDTO _this = new AuthResponseDTO();
-                            _this.setId((resultSetFinalCheck.getInt("idUser")));
+                            _this.setId((resultSetFinalCheck.getInt("id")));
                             _this.setUsername(resultSetFinalCheck.getString("username"));
+                            _this.setPassword(resultSetFinalCheck.getString("password"));
                             _this.setEmail(resultSetFinalCheck.getString("email"));
                             _this.setRole(resultSetFinalCheck.getString("role"));
                             _this.setIsBanned(resultSetFinalCheck.getBoolean("isBanned"));
@@ -54,7 +55,7 @@ public class AuthService extends Wrapper{
 
                     }
                 }
-               System.out.println("bad credentials");
+               System.out.println(username + " Logged In!");
                 return false;
             }
            System.out.println("username does not exist");

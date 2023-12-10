@@ -11,4 +11,6 @@ module speedysolutions {
 	requires mysql.connector.java;
 	requires java.logging;
 	requires java.mail;
+	requires itextpdf;
+	requires jfreechart;
 }

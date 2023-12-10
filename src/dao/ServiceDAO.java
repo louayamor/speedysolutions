@@ -16,7 +16,8 @@ public interface ServiceDAO {
     public int getSId();
     public void delete(Service s);
     public JList<Service> displayAll();
-    public Service displayById(int id_p);
-    
+    public Service displayById(int id_p);  
     public boolean update(int id ,String n , String d,int p,String f);
+    
+    
 }

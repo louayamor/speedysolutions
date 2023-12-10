@@ -40,7 +40,7 @@ public class Wrapper implements WrapperDAO {
     public boolean isFreelancer(int id) {
         try {
 
-            ps = conn.prepareStatement("select * FROM user WHERE idUser ='" + id + "' ");
+            ps = conn.prepareStatement("select * FROM user WHERE id ='" + id + "' ");
             rs = ps.executeQuery();
             while (rs.next()) {
                 if (rs.getString("role").equals("Freelancer")) {
@@ -58,10 +58,10 @@ public class Wrapper implements WrapperDAO {
     public boolean isBusinessOwner(int id) {
         try {
 
-            ps = conn.prepareStatement("select * FROM user WHERE idUser ='" + id + "' ");
+            ps = conn.prepareStatement("select * FROM user WHERE id ='" + id + "' ");
             rs = ps.executeQuery();
             while (rs.next()) {
-                if (rs.getString("role").equals("BOwner")) {
+                if (rs.getString("role").equals("Business Owner")) {
                     return true;
                 } else
                     return false;

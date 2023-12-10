@@ -72,7 +72,7 @@ public class LoginPage extends JFrame {
         titleLabel.setForeground(Color.WHITE);
         panel.add(titleLabel);
 
-        addLabelAndTextField(panel, "Email		", tfUsername, labelFont, labelColor);
+        addLabelAndTextField(panel, "Username		", tfUsername, labelFont, labelColor);
         addLabelAndTextField(panel, "Password", tfPass, labelFont, labelColor);
 
         JLabel forgotPassLabel = new JLabel("Forgot password?");
@@ -134,14 +134,16 @@ public class LoginPage extends JFrame {
         String password = PasswordEncryption.cryptage(tfPass.getText().trim());
         
         authService.Authenticate(username, password);
+        
+        if(CURRENT_USER  == null){
+            labelError.setText("User Not Found!");
+        }
 
         if (CURRENT_USER.getUser_LoggedIn().getIsBanned()) {
             JOptionPane.showMessageDialog(this, "You are banned", "Ban", JOptionPane.INFORMATION_MESSAGE);
         }
         
-        if(CURRENT_USER  == null){
-            labelError.setText("User Not Found!");
-        }
+        
         
         if (CURRENT_USER != null) {
             if (wrapper.isFreelancer(CURRENT_USER.getUser_LoggedIn().getId())) {
